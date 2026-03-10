@@ -1,0 +1,39 @@
+body{
+
+
+
+}
+
+
+.main-header {
+    background-color: blue;
+    display: flex;
+    padding: 30px;
+    justify-content: center;
+    color: chocolate;
+    text-align: center;
+}
+
+.main-title {
+    color: chartreuse;
+    font-size: 30px;
+
+}
+
+
+.logo {
+    height: 80px;
+}
+.navbar {
+    background-color: #87ceeb; 
+    border-top: 2px solid #000;
+    border-bottom: 2px solid #000;
+}
+.navbar ul {
+    list-style: none;
+    padding: 10px 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+}
