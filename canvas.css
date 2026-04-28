@@ -1,0 +1,9 @@
+#canvas {
+    background-color: aqua;
+}
+
+#canvas2 {
+    background-color: aqua;
+    position: absolute;
+    right: 0%;
+}
