@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Animação Interativa</title>
+    <style>
+        /* CSS: Cor de fundo e centralização */
+        body {
+            background-color: #2c3e50;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            color: white;
+            font-family: sans-serif;
+        }
+
+        canvas {
+            background-color: #ecf0f1;
+            border: 5px solid #34495e;
+            cursor: none; /* Esconde o cursor padrão para destacar a imagem */
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Mova o Mouse sobre o Canvas</h1>
+    <!-- Canvas configurado para 300x300 -->
+    <canvas id="myCanvas" width="300" height="300"></canvas>
+
+    <script>
+        const canvas = document.getElementById("myCanvas");
+        const ctx = canvas.getContext("2d");
+
+        // Carregando a imagem
+        const img = new Image();
+        img.src = "https://cdn-icons-png.flaticon.com/512/741/741407.png"
+
+        // Configurações da imagem
+        const imgSize = 50; 
+        let posX = 125; 
+        let posY = 125;
+
+        // Função para desenhar no canvas
+        function draw() {
+            // Limpa o canvas para o próximo frame
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Desenha a imagem centralizada na posição do mouse
+            ctx.drawImage(img, posX, posY, imgSize, imgSize);
+            
+            // Cria o loop de animação
+            requestAnimationFrame(draw);
+        }
+
+        // JS: Controle da posição pelo mouse
+        canvas.addEventListener("mousemove", (event) => {
+            const rect = canvas.getBoundingClientRect();
+            
+            // Cálculo para centralizar o mouse na imagem
+            // Subtraímos metade do tamanho da imagem da posição do mouse
+            let targetX = event.clientX - rect.left - (imgSize / 2);
+            let targetY = event.clientY - rect.top - (imgSize / 2);
+
+            // Regra: A imagem não pode desaparecer do canvas (Limites)
+            // Lógica: Se a posição for menor que 0, trava em 0. 
+            // Se for maior que a largura do canvas menos a imagem, trava no limite.
+            if (targetX < 0) targetX = 0;
+            if (targetX > canvas.width - imgSize) targetX = canvas.width - imgSize;
+            
+            if (targetY < 0) targetY = 0;
+            if (targetY > canvas.height - imgSize) targetY = canvas.height - imgSize;
+
+            posX = targetX;
+            posY = targetY;
+        });
+
+        // Inicia a animação quando a imagem carregar
+        img.onload = () => {
+            draw();
+        };
+    </script>
+</body>
+</html>

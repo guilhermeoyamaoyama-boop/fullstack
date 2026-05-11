@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Novo Post</title>
+    <style>
+        body { background-color: #e9ecef; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; }
+        form { background: white; padding: 20px; border-radius: 10px; display: flex; flex-direction: column; }
+        input, textarea { margin-bottom: 10px; padding: 8px; width: 300px; }
+    </style>
+</head>
+<body>
+    <h1>Cadastrar Novo Post</h1>
+    <form action="/salvar-post" method="POST">
+        <input type="text" name="titulo" placeholder="Título" required>
+        <input type="text" name="resumo" placeholder="Resumo" required>
+        <textarea name="conteudo" placeholder="Conteúdo do post" rows="5" required></textarea>
+        <button type="submit">Publicar</button>
+    </form>
+</body>
+</html>

@@ -1,0 +1,137 @@
+/* Configurações Gerais */
+body {
+    background-color: #d3d3d3; /* Cor de fundo cinza da página inteira */
+    font-family: 'SansSerif', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+/* Cabeçalho */
+.main-header {
+    background-color: #ffe4c4; /* Bege claro */
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 20px;
+    border: 5px solid #3b7bb1;
+    outline: 1px solid #000;
+    margin: 10px;
+}
+
+.main-title {
+    color: green;
+    font-size: 40px;
+}
+
+.logo {
+    height: 80px;
+}
+
+/* Menu */
+.navbar {
+    background-color: #87ceeb; /* Azul claro */
+    border-top: 2px solid #000;
+    border-bottom: 2px solid #000;
+}
+
+.navbar ul {
+    list-style: none;
+    padding: 10px 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+}
+
+.navbar a {
+    text-decoration: none;
+    color: #00008b;
+    font-weight: bold;
+}
+
+/* Conteúdo */
+.container {
+    padding: 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+h2 {
+    font-size: 24px;
+    margin-top: 30px;
+}
+
+.intro-text {
+    font-size: 20px; /* Conforme solicitado na imagem */
+    color: #483d8b;
+    margin-bottom: 20px;
+    text-align: justify;
+}
+
+/* Grids e Flex */
+.grid-livros {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin: 20px 0;
+}
+
+.grid-livros img {
+    width: 200px;
+    box-shadow: 5px 5px 10px rgba(0,0,0,0.3);
+}
+
+.flex-media {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 40px;
+}
+
+/* Tabela */
+.tabela-contatos {
+    margin: 0 auto;
+    border: 2px dashed red; /* Borda pontilhada vermelha da imagem */
+    border-collapse: collapse;
+    width: 50%;
+    background-color: white;
+}
+
+.tabela-contatos th, .tabela-contatos td {
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+
+.tabela-contatos th {
+    color: red;
+}
+
+/* Box Amarela */
+.consulta-box {
+    background-color: yellow;
+    display: inline-block;
+    padding: 10px 40px;
+    margin-top: 30px;
+    text-align: left;
+    border: 1px solid #000;
+}
+
+/* Rodapé */
+.main-footer {
+    background-color: #ffdab9; /* Pêssego */
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 50px;
+}
+
+.footer-text {
+    font-family: 'Comic Sans MS', cursive;
+    font-size: 15px;
+}
+
+.footer-logo {
+    height: 60px;
+}

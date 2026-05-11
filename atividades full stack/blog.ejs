@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Meu Blog</title>
+    <style>
+        body { background-color: #f4f4f4; text-align: center; font-family: Arial; }
+        .post { background: white; margin: 20px auto; padding: 15px; width: 60%; border-radius: 8px; }
+    </style>
+</head>
+<body>
+    <h1>Bem-vindo ao Blog</h1>
+    <a href="/cadastrar"><button>Criar Novo Post</button></a>
+
+    <hr>
+
+    <!-- Bloco de código EJS para apresentar posts dinamicamente -->
+    <% posts.forEach(post => { %>
+        <div class="post">
+            <h2><%= post.titulo %></h2>
+            <p><strong>Resumo:</strong> <%= post.resumo %></p>
+            <p><%= post.conteudo %></p>
+        </div>
+    <% }); %>
+</body>
+</html>
