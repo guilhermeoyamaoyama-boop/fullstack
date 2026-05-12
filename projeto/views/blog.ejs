@@ -1,0 +1,41 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Blog</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+    <h1>Blog</h1>
+
+    <a href="/cadastrar_post">
+        <button>Criar Post</button>
+    </a>
+
+    <hr>
+
+    <% posts.forEach(post => { %>
+
+        <div class="post">
+
+            <h2>
+                <%= post.titulo %>
+            </h2>
+
+            <h4>
+                <%= post.resumo %>
+            </h4>
+
+            <p>
+                <%= post.conteudo %>
+            </p>
+
+        </div>
+
+        <hr>
+
+    <% }) %>
+
+</body>
+</html>
