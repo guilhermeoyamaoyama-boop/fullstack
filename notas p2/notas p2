@@ -1,0 +1,206 @@
+1. db.js — troca os campos das funções
+ANTES (Carros):
+jsfunction criarCarro(marca, modelo, ano, qtde_disponivel) {
+  const novo = { id: uuidv4(), marca, modelo, ano: Number(ano), qtde_disponivel: Number(qtde_disponivel) };
+  db.carros.push(novo);
+  gravarDB(db);
+}
+DEPOIS (Livros):
+jsfunction criarLivro(titulo, autor, ano, quantidade) {
+  const novo = { id: uuidv4(), titulo, autor, ano: Number(ano), quantidade: Number(quantidade) };
+  db.livros.push(novo);  // ← troca "carros" por "livros"
+  gravarDB(db);
+}
+Troca também no db.json inicial:
+js// ANTES:
+{ "usuarios": [], "carros": [] }
+
+// DEPOIS:
+{ "usuarios": [], "livros": [] }
+E exporta as novas funções no final do db.js:
+js// ANTES:
+module.exports = { criarCarro, listarCarros, atualizarCarro, removerCarro, venderCarro, ... };
+
+// DEPOIS:
+module.exports = { criarLivro, listarLivros, atualizarLivro, removerLivro, emprestarLivro, ... };
+
+
+
+
+
+
+
+2. routes/carros.js → renomeia para routes/livros.js
+ANTES:
+jsrouter.post('/novo', autenticado, (req, res) => {
+  const { marca, modelo, ano, qtde_disponivel } = req.body;
+  db.criarCarro(marca, modelo, ano, qtde_disponivel);
+  req.session.mensagem = '✅ Carro cadastrado!';
+  res.redirect('/carros/gerenciar');
+});
+DEPOIS:
+jsrouter.post('/novo', autenticado, (req, res) => {
+  const { titulo, autor, ano, quantidade } = req.body;  // ← novos campos
+  db.criarLivro(titulo, autor, ano, quantidade);         // ← nova função
+  req.session.mensagem = '✅ Livro cadastrado!';
+  res.redirect('/livros/gerenciar');                     // ← nova rota
+});
+A rota do emprestar fica assim:
+js// ANTES (vender):
+router.post('/vender/:id', autenticado, (req, res) => {
+  const r = db.venderCarro(req.params.id);
+  ...
+  res.redirect('/carros/gerenciar');
+});
+
+// DEPOIS (emprestar):
+router.post('/emprestar/:id', autenticado, (req, res) => {
+  const r = db.emprestarLivro(req.params.id);
+  ...
+  res.redirect('/livros/gerenciar');
+});
+
+
+
+3. server.js — troca o nome da rota
+js// ANTES:
+app.use('/carros', require('./routes/carros'));
+
+// DEPOIS:
+app.use('/livros', require('./routes/livros'));
+
+
+
+
+4. Views — troca os campos nos formulários e tabelas
+views/livros/gerenciar.ejs — formulário de cadastro:
+html<!-- ANTES (Carros): -->
+<input type="text"   name="marca"  placeholder="Ex: Toyota">
+<input type="text"   name="modelo" placeholder="Ex: Corolla">
+<input type="number" name="ano"    placeholder="2024">
+<input type="number" name="qtde_disponivel" placeholder="0">
+
+<!-- DEPOIS (Livros): -->
+<input type="text"   name="titulo"     placeholder="Ex: Dom Quixote">
+<input type="text"   name="autor"      placeholder="Ex: Cervantes">
+<input type="number" name="ano"        placeholder="1605">
+<input type="number" name="quantidade" placeholder="0">
+Tabela de listagem — troca os <th> e <td>:
+html<!-- ANTES: -->
+<th>Marca</th><th>Modelo</th><th>Ano</th><th>Qtde</th>
+<td><%= carro.marca %></td><td><%= carro.modelo %></td>
+
+<!-- DEPOIS: -->
+<th>Título</th><th>Autor</th><th>Ano</th><th>Quantidade</th>
+<td><%= livro.titulo %></td><td><%= livro.autor %></td>
+Botão da ação especial:
+html<!-- ANTES: -->
+<form action="/carros/vender/<%= carro.id %>" method="POST">
+  <button class="btn btn-warning">Vender</button>
+</form>
+
+<!-- DEPOIS: -->
+<form action="/livros/emprestar/<%= livro.id %>" method="POST">
+  <button class="btn btn-warning">Emprestar</button>
+</form>
+
+
+
+
+CREATE 
+// ANTES (Carros):
+function criarCarro(marca, modelo, ano, qtde_disponivel) {
+  const db = lerDB();
+  const novo = { id: uuidv4(), marca, modelo, ano: Number(ano), qtde_disponivel: Number(qtde_disponivel) };
+  db.carros.push(novo);  // ← nome da coleção
+  gravarDB(db);
+  return novo;
+}
+
+// DEPOIS (Livros):
+function criarLivro(titulo, autor, ano, quantidade) {
+  const db = lerDB();
+  const novo = { id: uuidv4(), titulo, autor, ano: Number(ano), quantidade: Number(quantidade) };
+  db.livros.push(novo);  // ← nome da coleção
+  gravarDB(db);
+  return novo;
+}
+
+
+
+READ
+js// ANTES (Carros):
+function listarCarros() {
+  return lerDB().carros;  // ← nome da coleção
+}
+
+// DEPOIS (Livros):
+function listarLivros() {
+  return lerDB().livros;  // ← nome da coleção
+}
+
+
+UPDATE
+js// ANTES (Carros):
+function atualizarCarro(id, marca, modelo, ano, qtde_disponivel) {
+  const db = lerDB();
+  const i = db.carros.findIndex(c => c.id === id);  // ← coleção
+  if (i === -1) return { erro: 'Carro não encontrado.' };
+  db.carros[i] = { ...db.carros[i], marca, modelo, ano: Number(ano), qtde_disponivel: Number(qtde_disponivel) };
+  gravarDB(db);
+  return { sucesso: true };
+}
+
+// DEPOIS (Livros):
+function atualizarLivro(id, titulo, autor, ano, quantidade) {
+  const db = lerDB();
+  const i = db.livros.findIndex(l => l.id === id);  // ← coleção
+  if (i === -1) return { erro: 'Livro não encontrado.' };
+  db.livros[i] = { ...db.livros[i], titulo, autor, ano: Number(ano), quantidade: Number(quantidade) };
+  gravarDB(db);
+  return { sucesso: true };
+}
+
+
+
+
+js// ANTES (Carros):
+function removerCarro(id) {
+  const db = lerDB();
+  db.carros = db.carros.filter(c => c.id !== id);  // ← coleção
+  gravarDB(db);
+  return { sucesso: true };
+}
+
+// DEPOIS (Livros):
+function removerLivro(id) {
+  const db = lerDB();
+  db.livros = db.livros.filter(l => l.id !== id);  // ← coleção
+  gravarDB(db);
+  return { sucesso: true };
+}
+
+
+
+
+js// ANTES (Carros - Vender):
+function venderCarro(id) {
+  const db = lerDB();
+  const i = db.carros.findIndex(c => c.id === id);
+  if (i === -1) return { erro: 'Carro não encontrado.' };
+  if (db.carros[i].qtde_disponivel <= 0) return { erro: 'Já esgotado.', esgotado: true };
+  db.carros[i].qtde_disponivel -= 1;  // ← campo que decrementa
+  gravarDB(db);
+  return { sucesso: true, esgotado: db.carros[i].qtde_disponivel === 0, qtde: db.carros[i].qtde_disponivel };
+}
+
+// DEPOIS (Livros - Emprestar):
+function emprestarLivro(id) {
+  const db = lerDB();
+  const i = db.livros.findIndex(l => l.id === id);
+  if (i === -1) return { erro: 'Livro não encontrado.' };
+  if (db.livros[i].quantidade <= 0) return { erro: 'Já esgotado.', esgotado: true };
+  db.livros[i].quantidade -= 1;  // ← campo que decrementa
+  gravarDB(db);
+  return { sucesso: true, esgotado: db.livros[i].quantidade === 0, qtde: db.livros[i].quantidade };
+}
