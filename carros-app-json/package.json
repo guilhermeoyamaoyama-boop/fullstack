@@ -1,0 +1,14 @@
+{
+  "name": "carros-app",
+  "version": "1.0.0",
+  "description": "Sistema de gerência de carros com JSON",
+  "main": "server.js",
+  "scripts": { "start": "node server.js" },
+  "dependencies": {
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "bcryptjs": "^2.4.3",
+    "uuid": "^9.0.0"
+  }
+}

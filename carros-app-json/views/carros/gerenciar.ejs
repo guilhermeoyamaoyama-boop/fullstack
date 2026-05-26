@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Gerenciar Carros</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<header>
+  <h1>Painel de Gerência</h1>
+  <nav>
+    <a href="/carros">Lista Pública</a>
+    <a href="/carros/gerenciar">Gerenciar</a>
+    <a href="/usuarios/logout" style="color:#e63946">Sair (<%= usuario %>)</a>
+  </nav>
+</header>
+
+<div class="container" style="max-width:1100px">
+
+  <% if (mensagem) { %>
+    <div class="alerta alerta-info" style="margin-top:20px"><%= mensagem %></div>
+  <% } %>
+
+  <!-- CADASTRAR NOVO CARRO -->
+  <div class="card" style="max-width:100%;margin-top:24px">
+    <h2>Cadastrar Novo Carro</h2>
+    <form action="/carros/novo" method="POST">
+      <div style="display:flex;gap:12px;flex-wrap:wrap;">
+        <div class="form-group" style="flex:1;min-width:130px">
+          <label>Marca</label>
+          <input type="text" name="marca" required placeholder="Ex: Toyota">
+        </div>
+        <div class="form-group" style="flex:1;min-width:130px">
+          <label>Modelo</label>
+          <input type="text" name="modelo" required placeholder="Ex: Corolla">
+        </div>
+        <div class="form-group" style="flex:1;min-width:90px">
+          <label>Ano</label>
+          <input type="number" name="ano" required placeholder="2024" min="1900" max="2100">
+        </div>
+        <div class="form-group" style="flex:1;min-width:90px">
+          <label>Qtde Disponível</label>
+          <input type="number" name="qtde_disponivel" required placeholder="0" min="0">
+        </div>
+        <div class="form-group" style="justify-content:flex-end;padding-top:22px">
+          <button type="submit" class="btn btn-success">+ Cadastrar</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- TABELA -->
+  <h2 style="color:#e63946;margin-top:30px;align-self:flex-start">Carros Cadastrados</h2>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Marca</th><th>Modelo</th><th>Ano</th><th>Qtde</th>
+          <th>Status</th><th>Vender</th><th>Atualizar</th><th>Remover</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if (carros.length === 0) { %>
+          <tr>
+            <td colspan="8" style="text-align:center;color:#adb5bd;padding:20px">Nenhum carro cadastrado.</td>
+          </tr>
+        <% } %>
+
+        <% carros.forEach(function(carro) { %>
+          <tr>
+            <td><%= carro.marca %></td>
+            <td><%= carro.modelo %></td>
+            <td><%= carro.ano %></td>
+            <td><%= carro.qtde_disponivel %></td>
+            <td>
+              <% if (carro.qtde_disponivel === 0) { %>
+                <span class="badge-esgotado">ESGOTADO</span>
+              <% } else { %>
+                <span style="color:#2a9d5c;font-weight:bold;">OK</span>
+              <% } %>
+            </td>
+            <td>
+              <form action="/carros/vender/<%= carro.id %>" method="POST">
+                <button type="submit" class="btn btn-warning" <% if(carro.qtde_disponivel===0){%>disabled<%}%>>Vender</button>
+              </form>
+            </td>
+            <td>
+              <form action="/carros/atualizar/<%= carro.id %>" method="POST" class="form-inline">
+                <input type="text"   name="marca"           value="<%= carro.marca %>"           required>
+                <input type="text"   name="modelo"          value="<%= carro.modelo %>"          required>
+                <input type="number" name="ano"             value="<%= carro.ano %>"             required>
+                <input type="number" name="qtde_disponivel" value="<%= carro.qtde_disponivel %>" required min="0">
+                <button type="submit" class="btn btn-info">Salvar</button>
+              </form>
+            </td>
+            <td>
+              <form action="/carros/remover/<%= carro.id %>" method="POST"
+                    onsubmit="return confirm('Remover <%= carro.marca %> <%= carro.modelo %>?')">
+                <button type="submit" class="btn btn-danger">Remover</button>
+              </form>
+            </td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+</body>
+</html>
