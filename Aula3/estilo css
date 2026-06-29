@@ -1,9 +1,0 @@
-.cabecalho{
-display: flex;
-background-color: bisque;
-justify-content: space-between;
-align-items: center;
-}
-.inline{
-    display: inline;
-}
